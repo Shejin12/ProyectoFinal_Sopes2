@@ -14,6 +14,10 @@ import com.redxela.controller.ControladorApi;
 import com.redxela.controller.ControladorSocket;
 import com.redxela.service.ServicioPedidos;
 import io.javalin.Javalin;
+import io.javalin.json.JavalinJackson;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 // iniciar servidor Javalin y todos los hilos de simulacion
 public class Main {
@@ -91,7 +95,29 @@ public class Main {
         hiloDifusor.start();
         // crear aplicacion Javalin
         Javalin app;
+        // configurar mapeador para serializar campos privados con nombres en espanol
+        // ObjectMapper mapeador = new ObjectMapper();
+        // mapeador.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        // JavalinJackson jsonMapper = new JavalinJackson(mapeador, true);
+        ObjectMapper mapeador;
+        mapeador = new ObjectMapper();
+        // permitir serializar campos privados
+        mapeador.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        // crear adaptador json
+        JavalinJackson jsonMapper;
+        jsonMapper = new JavalinJackson(mapeador, true);
+        // app = Javalin.create(configurar -> {
+        //     // habilitar CORS
+        //     configurar.bundledPlugins.enableCors(cors -> {
+        //         // permitir cualquier origen
+        //         cors.addRule(regla -> {
+        //             regla.anyHost();
+        //         });
+        //     });
+        // });
         app = Javalin.create(configurar -> {
+            // asignar mapeador personalizado
+            configurar.jsonMapper(jsonMapper);
             // habilitar CORS
             configurar.bundledPlugins.enableCors(cors -> {
                 // permitir cualquier origen
