@@ -761,7 +761,10 @@ public class ServicioPedidos {
                     nuevo = 0;
                 }
                 // asignar
+                // producto.asignarExistencias(nuevo);
                 producto.asignarExistencias(nuevo);
+                // liberar ubicaciones ocupadas por consumo
+                almacen.liberarPorProducto(detalle.obtenerIdProducto(), detalle.obtenerCantidad());
             }
         }
     }

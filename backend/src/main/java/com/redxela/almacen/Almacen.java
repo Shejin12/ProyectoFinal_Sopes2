@@ -189,4 +189,41 @@ public class Almacen {
         // retornar tamano
         return ubicaciones.size();
     }
+
+    /**
+     * Liberar ubicaciones de un producto al consumir stock.
+     */
+    public int liberarPorProducto(String idProducto, int cantidad) {
+        // tomar cerrojo
+        cerrojo.lock();
+        try {
+            // iniciar liberadas
+            int liberadas;
+            liberadas = 0;
+            // recorrer ubicaciones
+            for (Ubicacion ubicacion : ubicaciones) {
+                // verificar si ya termino
+                if (liberadas >= cantidad) {
+                    break;
+                }
+                // verificar si esta ocupada con ese producto
+                if (ubicacion.estaOcupada()) {
+                    if (ubicacion.obtenerIdProducto().equals(idProducto)) {
+                        // liberar ubicacion
+                        ubicacion.asignarOcupada(false);
+                        ubicacion.asignarIdProducto("");
+                        ubicacion.asignarLote("");
+                        ubicacion.asignarCantidad(0);
+                        // incrementar
+                        liberadas = liberadas + 1;
+                    }
+                }
+            }
+            // retornar liberadas
+            return liberadas;
+        } finally {
+            // liberar cerrojo
+            cerrojo.unlock();
+        }
+    }
 }
