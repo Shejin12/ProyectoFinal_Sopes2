@@ -307,4 +307,19 @@ public class GestorRecursos {
             cerrojo.unlock();
         }
     }
+
+    /**
+     * Forzar marca de espera para demo de deadlock.
+     */
+    public void forzarEspera(String operacionId, RecursoTipo tipo) {
+        // tomar cerrojo
+        cerrojo.lock();
+        try {
+            // registrar espera manual
+            esperando.put(operacionId, tipo);
+        } finally {
+            // liberar cerrojo
+            cerrojo.unlock();
+        }
+    }
 }

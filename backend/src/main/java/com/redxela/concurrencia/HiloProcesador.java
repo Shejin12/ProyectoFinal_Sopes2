@@ -190,8 +190,9 @@ public class HiloProcesador implements Runnable {
         // usar servicio para reencolar como nuevo con mismo datos
         // simplificar: crear nuevo pedido con mismos datos
         try {
-            // solicitar creacion
-            servicio.crearPedido(pedido.obtenerIdCliente(), pedido.obtenerNivel().obtenerValor(), pedido.obtenerDetalles());
+            // solicitar reencolado del mismo pedido sin duplicar
+            // servicio.crearPedido(pedido.obtenerIdCliente(), pedido.obtenerNivel().obtenerValor(), pedido.obtenerDetalles());
+            servicio.reencolarTrasFallo(pedido.obtenerIdPedido());
         } catch (Exception error) {
             // ignorar error
         }

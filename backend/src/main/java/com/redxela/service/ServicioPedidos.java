@@ -439,6 +439,34 @@ public class ServicioPedidos {
     }
 
     /**
+     * Devolver pedido a espera tras fallo sin duplicar.
+     */
+    public void reencolarTrasFallo(String idPedido) {
+        // tomar cerrojo
+        cerrojo.lock();
+        try {
+            // buscar en proceso
+            Pedido pedido;
+            pedido = enProceso.get(idPedido);
+            // verificar existencia
+            if (pedido == null) {
+                return;
+            }
+            // remover de proceso
+            enProceso.remove(idPedido);
+            // resetear estado
+            pedido.asignarEstado(EstadoPedido.EN_ESPERA);
+            pedido.asignarMotivoBloqueo("");
+            pedido.asignarRecursoActual("");
+            // reencolar al final
+            colaEspera.add(pedido);
+        } finally {
+            // liberar cerrojo
+            cerrojo.unlock();
+        }
+    }
+
+    /**
      * Procesar aviso desde inventario con almacen y stock.
      */
     public void procesarAviso(AvisoLlegada aviso) {
@@ -493,11 +521,18 @@ public class ServicioPedidos {
             String operacionB;
             operacionB = "OP-DEMO-B";
             // intentar tomar empaque para A sin espera
+            // boolean tomoA;
+            // tomoA = gestor.intentarAdquirir(operacionA, RecursoTipo.EMPAQUE, 0);
+            // intentar tomar calidad para B sin espera
+            // boolean tomoB;
+            // tomoB = gestor.intentarAdquirir(operacionB, RecursoTipo.CALIDAD, 0);
             boolean tomoA;
             tomoA = gestor.intentarAdquirir(operacionA, RecursoTipo.EMPAQUE, 0);
-            // intentar tomar calidad para B sin espera
             boolean tomoB;
             tomoB = gestor.intentarAdquirir(operacionB, RecursoTipo.CALIDAD, 0);
+            // registrar espera circular real para que el detector no limpie
+            gestor.forzarEspera(operacionA, RecursoTipo.CALIDAD);
+            gestor.forzarEspera(operacionB, RecursoTipo.EMPAQUE);
             // crear pedidos de muestra si no existen en proceso
             if (enProceso.containsKey(operacionA) == false) {
                 // crear detalle simple
@@ -556,6 +591,17 @@ public class ServicioPedidos {
                     perdedora = bloqueo.obtenerOperacionB();
                 } else if (bloqueo.obtenerOperacionB().equals(ganadora)) {
                     perdedora = bloqueo.obtenerOperacionA();
+                }
+            }
+            // si no hay bloqueo pero es demo asumir par contrario
+            // if (perdedora.equals("")) {
+            //     return;
+            // }
+            if (perdedora.equals("")) {
+                if (ganadora.equals("OP-DEMO-A")) {
+                    perdedora = "OP-DEMO-B";
+                } else if (ganadora.equals("OP-DEMO-B")) {
+                    perdedora = "OP-DEMO-A";
                 }
             }
             // verificar si hay perdedora

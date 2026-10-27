@@ -100,6 +100,24 @@ public class DetectorDeadlock {
         remover = new ArrayList<>();
         // recorrer bloqueos
         for (BloqueoActivo bloqueo : bloqueos) {
+            // conservar demo manual hasta resolucion explicita
+            // if (bloqueo.obtenerOperacionA().contains("OP-DEMO")) {
+            //     continue;
+            // }
+            // if (bloqueo.obtenerOperacionB().contains("OP-DEMO")) {
+            //     continue;
+            // }
+            boolean esDemo;
+            esDemo = false;
+            if (bloqueo.obtenerOperacionA().contains("OP-DEMO")) {
+                esDemo = true;
+            }
+            if (bloqueo.obtenerOperacionB().contains("OP-DEMO")) {
+                esDemo = true;
+            }
+            if (esDemo) {
+                continue;
+            }
             // verificar si ambas operaciones siguen esperando
             boolean sigueA;
             sigueA = esperas.containsKey(bloqueo.obtenerOperacionA());
