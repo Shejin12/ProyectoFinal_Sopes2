@@ -33,13 +33,13 @@
       <p class="mb-3">Proceso promedio: <strong>{$estadisticas.procesoPromedioSeg} s</strong></p>
     {/if}
     <label class="form-label" for="selPolitica">Politica de atencion</label>
-    <select id="selPolitica" class="form-select mb-3" value={$politica} on:change={seleccionarPolitica}>
+    <select id="selPolitica" class="form-select mb-3" value={$politica} onchange={seleccionarPolitica}>
       <option value="PRIORIDAD_ESTRICTA">Prioridad estricta por nivel</option>
       <option value="ENVEJECIMIENTO">Envejecimiento sin inanicion</option>
       <option value="SJF">Trabajo mas corto primero</option>
     </select>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="chkGen" checked on:change={alternarGenerador} />
+      <input class="form-check-input" type="checkbox" id="chkGen" checked onchange={alternarGenerador} />
       <label class="form-check-label" for="chkGen">Generador automatico activo</label>
     </div>
   </div>

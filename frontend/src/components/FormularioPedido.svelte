@@ -4,17 +4,17 @@
   import { onMount } from "svelte";
 
   // declarar listas
-  let clientes = [];
-  let productos = [];
+  let clientes = $state([]);
+  let productos = $state([]);
   // declarar seleccion
-  let idCliente = "";
-  let nivel = 3;
-  let idProducto = "";
-  let cantidad = 1;
+  let idCliente = $state("");
+  let nivel = $state(3);
+  let idProducto = $state("");
+  let cantidad = $state(1);
   // declarar nombre para cliente nuevo
-  let nombreNuevo = "";
-  let nivelNuevo = 3;
-  let mensaje = "";
+  let nombreNuevo = $state("");
+  let nivelNuevo = $state(3);
+  let mensaje = $state("");
 
   // cargar datos al iniciar
   onMount(async () => {
@@ -92,7 +92,7 @@
     </select>
     <label class="form-label" for="inpCant">Cantidad</label>
     <input id="inpCant" type="number" min="1" max="50" class="form-control mb-2" bind:value={cantidad} />
-    <button class="btn btn-primary w-100 mb-3" on:click={enviarPedido}>Registrar pedido</button>
+    <button class="btn btn-primary w-100 mb-3" onclick={enviarPedido}>Registrar pedido</button>
     <h6>Crear cliente</h6>
     <input class="form-control mb-2" placeholder="Nombre de cliente" bind:value={nombreNuevo} />
     <select class="form-select mb-2" bind:value={nivelNuevo}>
@@ -102,7 +102,7 @@
       <option value={4}>4 Programado</option>
       <option value={5}>5 Economico</option>
     </select>
-    <button class="btn btn-secondary w-100" on:click={registrarCliente}>Crear cuenta</button>
+    <button class="btn btn-secondary w-100" onclick={registrarCliente}>Crear cuenta</button>
     {#if mensaje !== ""}
       <div class="alert alert-info mt-2 mb-0">{mensaje}</div>
     {/if}

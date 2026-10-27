@@ -29,7 +29,7 @@
 <div class="card mb-3 border-danger">
   <div class="card-header bg-danger text-white">Conflicto de recursos</div>
   <div class="card-body">
-    <button class="btn btn-outline-danger w-100 mb-3" on:click={forzar}>Provocar deadlock de prueba</button>
+    <button class="btn btn-outline-danger w-100 mb-3" onclick={forzar}>Provocar deadlock de prueba</button>
     {#if $bloqueos.length === 0}
       <p class="text-muted mb-0">Sin bloqueos detectados</p>
     {/if}
@@ -39,8 +39,8 @@
         <p class="mb-1"><strong>Motivo:</strong> {bloqueo.motivo}</p>
         <p class="mb-2"><strong>Recursos:</strong> {bloqueo.recursos.join(", ")}</p>
         <div class="d-flex gap-2">
-          <button class="btn btn-sm btn-danger" on:click={() => resolver(bloqueo.operacionA)}>Continuar {bloqueo.operacionA}</button>
-          <button class="btn btn-sm btn-secondary" on:click={() => resolver(bloqueo.operacionB)}>Continuar {bloqueo.operacionB}</button>
+          <button class="btn btn-sm btn-danger" onclick={() => resolver(bloqueo.operacionA)}>Continuar {bloqueo.operacionA}</button>
+          <button class="btn btn-sm btn-secondary" onclick={() => resolver(bloqueo.operacionB)}>Continuar {bloqueo.operacionB}</button>
         </div>
       </div>
     {/each}

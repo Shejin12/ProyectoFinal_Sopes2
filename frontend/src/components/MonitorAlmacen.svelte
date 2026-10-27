@@ -4,12 +4,12 @@
   import { onMount } from "svelte";
 
   // declarar datos
-  let pagina = 0;
-  let tamano = 20;
-  let capacidad = 0;
-  let libres = 0;
-  let ocupadas = 0;
-  let ubicaciones = [];
+  let pagina = $state(0);
+  let tamano = $state(20);
+  let capacidad = $state(0);
+  let libres = $state(0);
+  let ocupadas = $state(0);
+  let ubicaciones = $state([]);
 
   // cargar pagina
   async function cargar() {
@@ -23,7 +23,6 @@
   }
 
   // cargar al iniciar
-  // onMount(cargar);
   onMount(() => {
     // cargar de inmediato
     cargar();
@@ -70,9 +69,9 @@
       </tbody>
     </table>
     <div class="d-flex gap-2">
-      <button class="btn btn-sm btn-secondary" on:click={anterior}>Anterior</button>
-      <button class="btn btn-sm btn-secondary" on:click={siguiente}>Siguiente</button>
-      <button class="btn btn-sm btn-outline-secondary" on:click={cargar}>Recargar</button>
+      <button class="btn btn-sm btn-secondary" onclick={anterior}>Anterior</button>
+      <button class="btn btn-sm btn-secondary" onclick={siguiente}>Siguiente</button>
+      <button class="btn btn-sm btn-outline-secondary" onclick={cargar}>Recargar</button>
     </div>
   </div>
 </div>

@@ -4,10 +4,10 @@
   import { onMount } from "svelte";
 
   // declarar datos
-  let productos = [];
-  let idProducto = "";
-  let cantidad = 10;
-  let mensaje = "";
+  let productos = $state([]);
+  let idProducto = $state("");
+  let cantidad = $state(10);
+  let mensaje = $state("");
 
   // cargar productos
   onMount(async () => {
@@ -45,7 +45,7 @@
     </select>
     <label class="form-label" for="inpRec">Cantidad recibida</label>
     <input id="inpRec" type="number" min="1" max="200" class="form-control mb-2" bind:value={cantidad} />
-    <button class="btn btn-info w-100" on:click={enviarRecepcion}>Registrar llegada</button>
+    <button class="btn btn-info w-100" onclick={enviarRecepcion}>Registrar llegada</button>
     {#if mensaje !== ""}
       <div class="alert alert-info mt-2 mb-0">{mensaje}</div>
     {/if}
