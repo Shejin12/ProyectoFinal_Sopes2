@@ -9,6 +9,7 @@ import com.redxela.concurrencia.HiloDifusor;
 import com.redxela.concurrencia.HiloGenerador;
 import com.redxela.concurrencia.HiloInventario;
 import com.redxela.concurrencia.HiloProcesador;
+import com.redxela.concurrencia.HiloRecepcionAuto;
 import com.redxela.config.ConfiguracionSistema;
 import com.redxela.controller.ControladorApi;
 import com.redxela.controller.ControladorSocket;
@@ -86,6 +87,13 @@ public class Main {
         hiloDetector = new Thread(vigilante);
         hiloDetector.setDaemon(true);
         hiloDetector.start();
+        // crear hilo recepcion automatica
+        HiloRecepcionAuto recepcionAuto;
+        recepcionAuto = new HiloRecepcionAuto(servicio);
+        Thread hiloRecepcion;
+        hiloRecepcion = new Thread(recepcionAuto);
+        hiloRecepcion.setDaemon(true);
+        hiloRecepcion.start();
         // crear hilo difusor
         HiloDifusor difusor;
         difusor = new HiloDifusor(controlador, socket);

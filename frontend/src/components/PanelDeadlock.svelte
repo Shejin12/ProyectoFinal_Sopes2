@@ -1,18 +1,27 @@
 <script>
   // importar estado y api
   import { bloqueos } from "../stores/estado.js";
-  import { provocarDeadlock, resolverDeadlock } from "../services/api.js";
+  import { provocarDeadlock, resolverDeadlock, obtenerEstado } from "../services/api.js";
+  import { aplicarEstado } from "../stores/estado.js";
 
   // provocar bloqueo deliberado
   async function forzar() {
     // invocar backend
     await provocarDeadlock();
+    // recargar estado de inmediato
+    let estado = await obtenerEstado();
+    // aplicar a stores
+    aplicarEstado(estado);
   }
 
   // resolver con ganadora
   async function resolver(ganadora) {
     // invocar backend
     await resolverDeadlock(ganadora);
+    // recargar estado de inmediato
+    let estado = await obtenerEstado();
+    // aplicar a stores
+    aplicarEstado(estado);
   }
 </script>
 

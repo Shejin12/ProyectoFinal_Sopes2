@@ -23,7 +23,15 @@
   }
 
   // cargar al iniciar
-  onMount(cargar);
+  // onMount(cargar);
+  onMount(() => {
+    // cargar de inmediato
+    cargar();
+    // repetir cada 2 segundos
+    let intervalo = setInterval(cargar, 2000);
+    // limpiar al desmontar
+    return () => clearInterval(intervalo);
+  });
 
   // ir a anterior
   function anterior() {
